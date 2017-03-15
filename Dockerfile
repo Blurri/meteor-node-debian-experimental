@@ -1,4 +1,4 @@
-FROM ubuntu:16.10
+FROM nodesource/xenial:6.3.1
 
 
 MAINTAINER Gabor Raz
@@ -18,8 +18,6 @@ RUN locale-gen en_US.UTF-8
 RUN export LANG=en_US.UTF-8
 RUN export LANGUAGE=en_US:en
 RUN export LC_ALL=en_US.UTF-8
-RUN curl -sL https://deb.nodesource.com/setup_6.x | -E bash -
-RUN apt-get install -y nodejs
 RUN npm install node-gyp -g
 RUN curl https://install.meteor.com/ | sh
 RUN apt-get install -y openssh-client
@@ -33,7 +31,8 @@ RUN curl -o /var/tmp/firefox-45.4.0esr.tar.bz2 https://ftp.mozilla.org/pub/firef
 RUN tar xvfj /var/tmp/firefox-45.4.0esr.tar.bz2
 RUN ln -s /firefox/firefox-bin /usr/bin/firefox
 
-# Install Chromium and register as Chrome
-RUN apt-get install -y chromium-browser
-ADD chrome-nosandbox /usr/bin/chrome
-RUN chmod +x /usr/bin/chrome
+RUN apt-get update && apt-get install -y chromium
+
+ADD xvfb-chromium /usr/bin/xvfb-chromium
+RUN ln -s /usr/bin/xvfb-chromium /usr/bin/google-chrome
+RUN ln -s /usr/bin/xvfb-chromium /usr/bin/chromium-browser
