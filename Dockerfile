@@ -7,6 +7,21 @@ RUN apt-get update
 RUN apt-get update >/dev/null
 RUN apt-get install -y git
 RUN apt-get install -y curl
+
+
+RUN apt-get update && apt-get install -y xvfb default-jre
+
+# Install Firefox 45.4.0 (https://github.com/SeleniumHQ/selenium/blob/master/java/CHANGELOG#L33)
+RUN curl -o /var/tmp/firefox-45.4.0esr.tar.bz2 https://ftp.mozilla.org/pub/firefox/releases/45.4.0esr/linux-x86_64/en-US/firefox-45.4.0esr.tar.bz2
+RUN tar xvfj /var/tmp/firefox-45.4.0esr.tar.bz2
+RUN ln -s /firefox/firefox-bin /usr/bin/firefox
+
+RUN sudo apt-get install chromium-browser chromium-browser-l10n chromium-codecs-ffmpeg 
+
+ADD xvfb-chromium /usr/bin/xvfb-chromium
+RUN ln -s /usr/bin/xvfb-chromium /usr/bin/google-chrome
+RUN ln -s /usr/bin/xvfb-chromium /usr/bin/chromium-browser
+
 RUN apt-get install -y build-essential
 RUN apt-get install -y python
 RUN apt-get install -y make
@@ -24,15 +39,3 @@ RUN apt-get install -y openssh-client
 RUN echo 'PATH="/usr/local/node/bin:${PATH}"' >> /etc/bash.bashrc
 
 
-RUN apt-get update && apt-get install -y xvfb default-jre
-
-# Install Firefox 45.4.0 (https://github.com/SeleniumHQ/selenium/blob/master/java/CHANGELOG#L33)
-RUN curl -o /var/tmp/firefox-45.4.0esr.tar.bz2 https://ftp.mozilla.org/pub/firefox/releases/45.4.0esr/linux-x86_64/en-US/firefox-45.4.0esr.tar.bz2
-RUN tar xvfj /var/tmp/firefox-45.4.0esr.tar.bz2
-RUN ln -s /firefox/firefox-bin /usr/bin/firefox
-
-RUN apt-get update && apt-get install -y chromium
-
-ADD xvfb-chromium /usr/bin/xvfb-chromium
-RUN ln -s /usr/bin/xvfb-chromium /usr/bin/google-chrome
-RUN ln -s /usr/bin/xvfb-chromium /usr/bin/chromium-browser
