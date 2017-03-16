@@ -16,7 +16,8 @@ RUN curl -o /var/tmp/firefox-45.4.0esr.tar.bz2 https://ftp.mozilla.org/pub/firef
 RUN tar xvfj /var/tmp/firefox-45.4.0esr.tar.bz2
 RUN ln -s /firefox/firefox-bin /usr/bin/firefox
 
-RUN apt-get install chromium-browser chromium-browser-l10n chromium-codecs-ffmpeg 
+RUN apt install chromium-browser
+
 
 ADD xvfb-chromium /usr/bin/xvfb-chromium
 RUN ln -s /usr/bin/xvfb-chromium /usr/bin/google-chrome
